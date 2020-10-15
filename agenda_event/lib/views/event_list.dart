@@ -24,7 +24,7 @@ class _EventListState extends State<EventList> {
 
     return Container(
       decoration: BoxDecoration(
-          color: theme.accentColor,
+          color: Colors.blue, // aba baixo
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(8), topRight: Radius.circular(8))),
       child: Column(
@@ -35,7 +35,7 @@ class _EventListState extends State<EventList> {
             child: Container(
               margin: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Colors.black12,
+                  color: Colors.black.withOpacity(0.25),
                   borderRadius: BorderRadius.circular(8)),
               width: 120,
               height: 8,
@@ -47,9 +47,9 @@ class _EventListState extends State<EventList> {
                     margin: EdgeInsets.only(top: 16),
                     alignment: Alignment.topCenter,
                     child: Text(
-                      "No events",
+                      "Sem Eventos",
                       style: theme.textTheme.headline6
-                          .copyWith(color: Colors.white70),
+                          .copyWith(color: Colors.white),
                     ),
                   )
                 : buildListView(theme),

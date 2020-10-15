@@ -10,7 +10,7 @@ class FillFlatButton extends StatelessWidget {
       onTap:onPressed,
       child: Container(
         height: 48,
-        color: Theme.of(context).accentColor,
+        color: Colors.blue,
         alignment: Alignment.center,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -18,7 +18,7 @@ class FillFlatButton extends StatelessWidget {
             Icon(
               Icons.done,
               size: 20,
-              color: Theme.of(context).accentIconTheme.color,
+              color: Colors.white,
             ),
             SizedBox(
               width: 8,

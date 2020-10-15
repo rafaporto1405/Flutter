@@ -27,12 +27,11 @@ class _CalendarViewDateState extends State<CalendarViewDate> {
   }
 
   Widget _buildDate() {
-    ThemeData theme = Theme.of(context);
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: widget.notSameMonth
-            ? Colors.black.withOpacity(0.06)
+            ? Colors.black.withOpacity(0.10)
             : Colors.transparent,
       ),
       child: Stack(
@@ -44,11 +43,11 @@ class _CalendarViewDateState extends State<CalendarViewDate> {
             child: Text(
               widget.text,
               style: widget.style
-                  .copyWith(color: widget.selected ? Colors.white : null),
+                  .copyWith(color: Colors.black),
             ),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: widget.selected ? theme.accentColor : null,
+                color: widget.selected ? Colors.blue : null,
                 borderRadius: BorderRadius.circular(8)
               // shape: BoxShape.circle,
             ),
@@ -61,7 +60,7 @@ class _CalendarViewDateState extends State<CalendarViewDate> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                   color: widget.hasEvent
-                      ? widget.selected ? Colors.white70 : theme.primaryColor
+                      ? widget.selected ? Colors.white70 : Colors.blue
                       : null,
                   borderRadius: BorderRadius.circular(8)),
             ),

@@ -69,7 +69,7 @@ class _CalendarViewMonthPickerState extends State<CalendarViewMonthPicker> {
                         child: Text(
                           year,
                           style: theme.textTheme.headline4.copyWith(
-                              // color: Colors.white,
+                              color: Colors.black,
                               fontWeight: FontWeight.w200),
                         ),
                       ),
@@ -103,7 +103,7 @@ class _CalendarViewMonthPickerState extends State<CalendarViewMonthPicker> {
                   ),
                 ),
                 FillFlatButton(
-                  text: "Done",
+                  text: "Feito",
                   onPressed: () => Navigator.of(context).pop(),
                 )
               ],
@@ -122,7 +122,7 @@ class _CalendarViewMonthPickerState extends State<CalendarViewMonthPicker> {
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: isSelected ? theme.accentColor.withOpacity(0.1) : null),
+            color: isSelected ? Colors.blue.withOpacity(0.20) : null),
         child: InkWell(
           onTap: () {
             updateDate(dateTime);
@@ -137,14 +137,14 @@ class _CalendarViewMonthPickerState extends State<CalendarViewMonthPicker> {
                 child: Text(
                   month,
                   style: theme.textTheme.subtitle1.copyWith(
-                    color: theme.hintColor,
+                    color: Colors.black,
                   ),
                 ),
               ),
               Container(
                 height: 2,
                 color: isSelected
-                    ? theme.accentColor.withOpacity(0.4)
+                    ? theme.accentColor.withOpacity(0.80)
                     : Colors.transparent,
               ),
             ],

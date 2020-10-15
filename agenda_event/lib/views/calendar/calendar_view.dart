@@ -234,7 +234,7 @@ class _CalendarViewContainerState extends State<CalendarViewContainer> {
                           child: Text(
                             month,
                             style: theme.textTheme.headline4.copyWith(
-                                color: textColor, fontWeight: FontWeight.w200),
+                                color: Colors.black, fontWeight: FontWeight.w200),
                           ),
                         ),
                       );

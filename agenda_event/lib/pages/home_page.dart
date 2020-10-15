@@ -1,4 +1,6 @@
 import 'package:agenda_event/bloc/event.dart';
+import 'package:agenda_event/entities/event.dart';
+import 'package:agenda_event/views/event_creator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
   final EventBloc _eventBloc = EventBloc();
+  PersistentBottomSheetController _bottomSheetController;
 
   List<DateTime> _selectedDates = [];
 
@@ -35,20 +38,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
       child: Scaffold(   
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Calendário",textAlign: TextAlign.center,
+          title: Text("Agenda",textAlign: TextAlign.center,
             style: TextStyle(color: Colors.black,fontWeight: FontWeight.w200, fontSize: 36.0 ),
           ),
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Colors.blue,
           shadowColor: Colors.transparent,
-          actions: <Widget>[
-            FloatingActionButton(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.add, color: Colors.deepPurple,size: 40.0, ),
-              onPressed: (){}
-            )
-          ],
         ),         
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false, //new line
         body: StreamBuilder<EventBundle>(           
             stream: _eventBloc.startStream(),
@@ -58,9 +54,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
                 selectedDates: _selectedDates,
               );
             }),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.white,
+          onPressed: _createEvent,
+          child: Icon(Icons.add, color: Colors.blue,),
+        )
       ),
     );
   }
 
-
+  void _createEvent() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => EventCreator(
+        ))
+    );
+  }
 }
