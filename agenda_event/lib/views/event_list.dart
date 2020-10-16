@@ -1,6 +1,5 @@
 import 'package:agenda_event/entities/event.dart';
 import 'package:agenda_event/helper/time.dart';
-
 import 'package:flutter/material.dart';
 
 class EventList extends StatefulWidget {
@@ -13,9 +12,11 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
+
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
@@ -44,20 +45,21 @@ class _EventListState extends State<EventList> {
           Expanded(
             child: widget.events?.isEmpty ?? true
                 ? Container(
-                    margin: EdgeInsets.only(top: 16),
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      "Sem Eventos",
-                      style: theme.textTheme.headline6
-                          .copyWith(color: Colors.white),
-                    ),
-                  )
+              margin: EdgeInsets.only(top: 16),
+              alignment: Alignment.topCenter,
+              child: Text(
+                "Sem Eventos",
+                style: theme.textTheme.headline6
+                    .copyWith(color: Colors.white),
+              ),
+            )
                 : buildListView(theme),
-          ),
+          )
         ],
       ),
     );
   }
+
 
   ListView buildListView(ThemeData theme) {
     return ListView.builder(
@@ -130,11 +132,12 @@ class _EventListState extends State<EventList> {
     );
   }
 
+
   Card buildEventDetails(Event event, ThemeData theme) {
     DateTime startDateTime =
-        DateTime.fromMillisecondsSinceEpoch(event.startDateTime);
+    DateTime.fromMillisecondsSinceEpoch(event.startDateTime);
     DateTime endDateTime =
-        DateTime.fromMillisecondsSinceEpoch(event.endDateTime);
+    DateTime.fromMillisecondsSinceEpoch(event.endDateTime);
 
     Duration duration = endDateTime.difference(startDateTime);
     return Card(
@@ -150,7 +153,7 @@ class _EventListState extends State<EventList> {
                 Text(
                   TimeHelper.toText(startDateTime.hour, startDateTime.minute),
                   style:
-                      theme.textTheme.subtitle1.copyWith(color: Colors.white),
+                  theme.textTheme.subtitle1.copyWith(color: Colors.white),
                 ),
                 Icon(
                   Icons.chevron_right,
@@ -160,12 +163,12 @@ class _EventListState extends State<EventList> {
                 Text(
                   TimeHelper.toText(endDateTime.hour, endDateTime.minute),
                   style:
-                      theme.textTheme.subtitle1.copyWith(color: Colors.white),
+                  theme.textTheme.subtitle1.copyWith(color: Colors.white),
                 ),
                 Text(
                   " (${TimeHelper.toDurationTextByDuration(duration)})",
                   style:
-                      theme.textTheme.subtitle1.copyWith(color: Colors.white70),
+                  theme.textTheme.subtitle1.copyWith(color: Colors.white70),
                 ),
               ],
             ),
@@ -186,4 +189,6 @@ class _EventListState extends State<EventList> {
       ),
     );
   }
+
+
 }

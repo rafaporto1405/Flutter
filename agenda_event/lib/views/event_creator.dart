@@ -1,26 +1,56 @@
+import 'package:agenda_event/helper/event_date.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
-class EventCreator extends StatefulWidget { 
+class EventCreator extends StatefulWidget {
+  final EventDate eventdate;
+
+  EventCreator({this.eventdate});
 
   @override
   _EventCreatorState createState() => _EventCreatorState();
 }
 
 class _EventCreatorState extends State<EventCreator> {
+  //variaveis data
   DateTime pickedDateStart;
   DateTime pickedDateEnd;
   TimeOfDay timeStart;
   TimeOfDay timeEnd;
+  DateTime dateStart;
+  DateTime dateEnd;
+
+  //outras
+  final nameEventController = TextEditingController();
+  final locEventController = TextEditingController();
+  final descEventController = TextEditingController();
+
+  bool _userEdited = false;
+  EventDate _editedEventDate;
+
 
   @override
   void initState() { 
     super.initState();
-    pickedDateStart = DateTime.now();
-    pickedDateEnd = DateTime.now();
-    timeStart = TimeOfDay.now();
-    timeEnd = TimeOfDay.now();
+
+    if (widget.eventdate == null) {
+      _editedEventDate = EventDate();
+      pickedDateStart = DateTime.now();
+      pickedDateEnd = DateTime.now();
+      timeStart = TimeOfDay.now();
+      timeEnd = TimeOfDay.now();
+    } else {
+      // transformando o contato em um mapa e criando um novo contato atraves dele
+      _editedEventDate = EventDate.fromMap(widget.eventdate.toMap());
+
+      nameEventController.text = _editedEventDate.name;
+      dateStart = DateTime.parse(_editedEventDate.dateStart);
+      dateEnd = DateTime.parse(_editedEventDate.dateStart);
+      locEventController.text = _editedEventDate.loc;
+      descEventController.text = _editedEventDate.desc;
+
+    }
   }
 
 
@@ -35,16 +65,26 @@ class _EventCreatorState extends State<EventCreator> {
       ),
       body: SingleChildScrollView(
         child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           //Nome Evento
           Padding(padding: EdgeInsets.only(left:10.0, top: 10.0,right: 10.0,bottom: 5.0),
             child: TextField(
+              controller: nameEventController,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 labelText: "Nome do Evento:",
                 labelStyle: TextStyle(color: Colors.blue),
               )
+            ),
+          ),
+          //Texto Data Inicio
+          Padding(padding: EdgeInsets.only(left:10.0, top: 10.0,right: 10.0,bottom: 5.0),
+            child: Text("Data de início: ",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 18
+              ),
             ),
           ),
           //Data Inicio
@@ -63,9 +103,19 @@ class _EventCreatorState extends State<EventCreator> {
                 )
               ),
               child: ListTile(
-                title: Text("Data de início: ${pickedDateStart.day}/${pickedDateStart.month}/${pickedDateStart.year}"),
-                trailing: Icon(Icons.calendar_today, color: Colors.blue,),
-                onTap: _pickDate,
+
+                leading: Icon(Icons.calendar_today, color: Colors.blue,),
+                title: Text("${pickedDateStart.day}/${pickedDateStart.month}/${pickedDateStart.year} - ${timeStart.hour}:${timeStart.minute}"),
+                onTap: _pickDateStart,
+              ),
+            ),
+          ),
+          //Texto Data final
+          Padding(padding: EdgeInsets.only(left:10.0, top: 10.0,right: 10.0,bottom: 5.0),
+            child: Text("Data de término: ",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 18
               ),
             ),
           ),
@@ -85,59 +135,16 @@ class _EventCreatorState extends State<EventCreator> {
                 )
               ),
               child: ListTile(
-                title: Text("Data de término: ${pickedDateEnd.day}/${pickedDateEnd.month}/${pickedDateEnd.year}"),
-                trailing: Icon(Icons.calendar_today, color: Colors.blue,),
+                leading: Icon(Icons.calendar_today, color: Colors.blue,),
+                title: Text("${pickedDateEnd.day}/${pickedDateEnd.month}/${pickedDateEnd.year} - ${timeEnd.hour}:${timeEnd.minute}"),
                 onTap: _pickDateEnd,
-              ),
-            ),
-          ),
-          //Horario Inicio
-          Padding(padding: EdgeInsets.only(left:10.0, top: 10.0,right: 10.0,bottom: 5.0),
-            child: Container(
-              alignment: Alignment.center,
-              height: 60.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                  border: Border.all(
-                  width: 2.0, 
-                  color: Colors.blue,             
-                ),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0)
-                )
-              ),
-              child: ListTile(
-                title: Text("Horário de início: ${timeStart.hour}:${timeStart.minute}"),
-                trailing: Icon(Icons.calendar_today, color: Colors.blue,),
-                onTap: _pickTimeStart,
-              ),
-            ),
-          ),
-          //Horario Final
-          Padding(padding: EdgeInsets.only(left:10.0, top: 10.0,right: 10.0,bottom: 5.0),
-            child: Container(
-              alignment: Alignment.center,
-              height: 60.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                  border: Border.all(
-                  width: 2.0, 
-                  color: Colors.blue,             
-                ),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0)
-                )
-              ),
-              child: ListTile(
-                title: Text("Horário de término: ${timeEnd.hour}:${timeEnd.minute}"),
-                trailing: Icon(Icons.calendar_today, color: Colors.blue,),
-                onTap: _pickTimeEnd,
               ),
             ),
           ),
           //Localizacao
           Padding(padding: EdgeInsets.only(left:10.0, top: 10.0,right: 10.0,bottom: 5.0),
             child: TextField(
+              controller: locEventController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.gps_fixed_outlined, color: Colors.blue,),
                 labelText: "Localização",
@@ -148,6 +155,7 @@ class _EventCreatorState extends State<EventCreator> {
           //Descricao do Evento
           Padding(padding: EdgeInsets.only(left:10.0, top: 10.0,right: 10.0,bottom: 5.0),
             child: TextField(
+              controller: descEventController,
               decoration: InputDecoration(
                 labelText: "Descrição do Evento: ",
                 labelStyle: TextStyle(color: Colors.blue),
@@ -175,7 +183,7 @@ class _EventCreatorState extends State<EventCreator> {
     );
   }
 
-  _pickDate()async {
+  _pickDateStart()async {
     DateTime date = await showDatePicker(
       context: context, 
       initialDate: pickedDateStart,
@@ -186,11 +194,34 @@ class _EventCreatorState extends State<EventCreator> {
     if(date != null){
       setState(() {
         pickedDateStart = date;
+
+      });
+    }
+    _pickTimeStart(date);
+  }
+
+  _pickTimeStart(DateTime date)async {
+    TimeOfDay timeOfDay = await showTimePicker(
+      context: context,
+      initialTime: timeStart,
+    );
+
+    if(timeOfDay != null){
+      setState(() {
+        timeStart = timeOfDay;
+
+        dateStart = DateTime(
+            date.year,
+            date.month,
+            date.day,
+            timeOfDay.hour,
+            timeOfDay.minute
+        );
       });
     }
   }
 
-    _pickDateEnd()async {
+  _pickDateEnd()async {
     DateTime date = await showDatePicker(
       context: context, 
       initialDate: pickedDateEnd,
@@ -203,22 +234,11 @@ class _EventCreatorState extends State<EventCreator> {
         pickedDateEnd = date;
       });
     }
+
+    _pickTimeEnd(date);
   }
 
-  _pickTimeStart()async {
-    TimeOfDay timeOfDay = await showTimePicker(
-      context: context, 
-      initialTime: timeStart,
-    );
-
-    if(timeOfDay != null){
-      setState(() {
-        timeStart = timeOfDay;
-      });
-    }
-  }
-
-  _pickTimeEnd()async {
+  _pickTimeEnd(DateTime date)async {
     TimeOfDay timeOfDay = await showTimePicker(
       context: context, 
       initialTime: timeEnd,
@@ -227,6 +247,14 @@ class _EventCreatorState extends State<EventCreator> {
     if(timeOfDay != null){
       setState(() {
         timeEnd = timeOfDay;
+
+        dateEnd = DateTime(
+            date.year,
+            date.month,
+            date.day,
+            timeOfDay.hour,
+            timeOfDay.minute
+        );
       });
     }
   }

@@ -1,8 +1,8 @@
 import 'package:agenda_event/bloc/event.dart';
+import 'package:agenda_event/helper/event_date.dart';
 import 'package:agenda_event/views/event_creator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'calendar.dart';
 
 
@@ -15,10 +15,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
-  final EventBloc _eventBloc = EventBloc();
-  PersistentBottomSheetController _bottomSheetController;
+  eventDateHelper helper = eventDateHelper();
 
+  List<EventDate> event_date = List();
+
+
+  final EventBloc _eventBloc = EventBloc();
   List<DateTime> _selectedDates = [];
+
 
   @override
   void initState() {
@@ -55,12 +59,42 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
             }),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,
-          onPressed: _createEvent,
           child: Icon(Icons.add, color: Colors.blue,),
+          onPressed: () {
+            _showContactPage();
+          },
         )
       ),
     );
   }
+
+  void _showContactPage({EventDate eventDate}) async {
+    final recEventDate = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EventCreator(
+              eventdate: eventDate,
+            )));
+    if (recEventDate != null) {
+      if (eventDate != null) {
+        await helper.updateEventDate(recEventDate);
+      } else {
+        await helper.saveEventDate(recEventDate);
+      }
+      _getAllContacts();
+    }
+  }
+  void _getAllContacts() {
+    helper.getAllEventDate().then((list) {
+      setState(() {
+        event_date = list;
+      });
+    });
+  }
+
+
+
+
 
   void _createEvent() {
     Navigator.push(
@@ -69,6 +103,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
         ))
     );
   }
+
 
   
 }
