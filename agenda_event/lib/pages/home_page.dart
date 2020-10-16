@@ -1,5 +1,4 @@
 import 'package:agenda_event/bloc/event.dart';
-import 'package:agenda_event/entities/event.dart';
 import 'package:agenda_event/views/event_creator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -70,4 +69,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
         ))
     );
   }
+
+  
 }

@@ -5,15 +5,8 @@ import 'package:agenda_event/resources/database.dart';
 import 'base.dart';
 
 class EventBloc extends BaseBloc<EventBundle> {
-  AppDatabase db = AppDatabase();
   Future<EventBundle> retrieveEvents() async {
     try {
-      List<Event> events = await (await db.init()).getEvents();
-
-      EventBundle bundle = EventBundle(eventMap: toMap(events));
-      sink.add(bundle);
-
-      return bundle;
     } catch (e) {}
     return null;
   }
