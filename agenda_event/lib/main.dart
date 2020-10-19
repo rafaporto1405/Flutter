@@ -12,6 +12,12 @@ void main() {
   ]).then((_) {
     runApp(new MyApp());
   });
+  /*Lista a fazer:
+  -apresentar as informações na lista de acordo com a data;
+  -excluir contanto;
+  -editar contato;
+  atualizar automaticamente a lista no arquivo: event_list;
+  */
 }
 
 class MyApp extends StatelessWidget {

@@ -1,21 +1,34 @@
 import 'package:agenda_event/entities/event.dart';
+import 'package:agenda_event/helper/event_date.dart';
 import 'package:agenda_event/helper/time.dart';
+import 'package:agenda_event/pages/home_page.dart';
 import 'package:flutter/material.dart';
+
+import 'event_creator.dart';
 
 class EventList extends StatefulWidget {
   EventList({this.events, Key key, this.onEdit}) : super(key: key);
   final List<Event> events;
   final ValueChanged<Event> onEdit;
+  
 
   @override
   _EventListState createState() => _EventListState();
 }
 
 class _EventListState extends State<EventList> {
+  DateTime pickedDateStart;
+  DateTime pickedDateEnd;
+  TimeOfDay timeStart;
+  TimeOfDay timeEnd;
+  eventDateHelper helper = eventDateHelper();
+  List<EventDate> event_date = List();
 
   @override
   void initState() {
     super.initState();
+
+    getAllContacts();
 
   }
 
@@ -43,7 +56,7 @@ class _EventListState extends State<EventList> {
             ),
           ),
           Expanded(
-            child: widget.events?.isEmpty ?? true
+            child: event_date.isEmpty ?? true
                 ? Container(
               margin: EdgeInsets.only(top: 16),
               alignment: Alignment.topCenter,
@@ -53,12 +66,96 @@ class _EventListState extends State<EventList> {
                     .copyWith(color: Colors.white),
               ),
             )
-                : buildListView(theme),
+                : ListView.builder(
+                  padding: EdgeInsets.all(10.0),
+                  itemCount: event_date.length,
+                  itemBuilder: (context, index) {
+                    //getAllContacts(); retirar duvida se fica em loop ou não
+                    return _contactCard(context, index);}
+                )
           )
         ],
       ),
     );
   }
+
+  Widget _contactCard(BuildContext context, int index) {
+    return GestureDetector(
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.add_alert ,
+                      color: Colors.blue,
+                    ),
+                    Text(
+                      event_date[index].name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold,
+                          color: Colors.blue
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      event_date[index].dateStart.substring(0,16) + " às " +event_date[index].dateEnd.substring(0,16) ,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      event_date[index].loc,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+            ],
+          ),
+        ),
+      ),
+      onTap: () {},
+    );
+  }
+
+  
+  void getAllContacts() {
+    helper.getAllEventDate().then((list) {
+      setState(() {
+        event_date = list;
+      });
+    });
+    //print(event_date);
+  }
+
 
 
   ListView buildListView(ThemeData theme) {
@@ -189,6 +286,5 @@ class _EventListState extends State<EventList> {
       ),
     );
   }
-
 
 }

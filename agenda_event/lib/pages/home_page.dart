@@ -1,6 +1,7 @@
 import 'package:agenda_event/bloc/event.dart';
 import 'package:agenda_event/helper/event_date.dart';
 import 'package:agenda_event/views/event_creator.dart';
+import 'package:agenda_event/views/event_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'calendar.dart';
@@ -9,14 +10,17 @@ import 'calendar.dart';
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
   final String title;
+  
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
-  eventDateHelper helper = eventDateHelper();
+  EventList eventListPage;
 
+  String testList ="Lista: ";
+  eventDateHelper helper = eventDateHelper();
   List<EventDate> event_date = List();
 
 
@@ -61,12 +65,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
           backgroundColor: Colors.white,
           child: Icon(Icons.add, color: Colors.blue,),
           onPressed: () {
+            //_ExcluirEvent();
+            _testedbConsole();
             _showContactPage();
           },
         )
       ),
     );
   }
+
+  //_showContactPage();
 
   void _showContactPage({EventDate eventDate}) async {
     final recEventDate = await Navigator.push(
@@ -93,17 +101,34 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
   }
 
 
-
-
-
-  void _createEvent() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => EventCreator(
-        ))
-    );
+  void _testedbConsole(){
+    helper.getAllEventDate().then((list){print(list);} );
+    print(event_date);
   }
 
+  void _testedb(){
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () { },
+    );
 
+    AlertDialog dialogDb = AlertDialog(
+      title: Text("Pesquisa DB"),
+      content: Text("Nome do evento: " + event_date[0].name), //contacts[index].name
+      actions: [
+      okButton,
+    ],
+    );
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+      return dialogDb;
+      },
+    );
+  }
   
+  void _ExcluirEvent(){
+    helper.deleteEventDate(6);
+  }
 }
