@@ -46,10 +46,19 @@ class _EventCreatorState extends State<EventCreator> {
       _editedEventDate = EventDate.fromMap(widget.eventdate.toMap());
 
       nameEventController.text = _editedEventDate.name;
-      dateStart = DateTime.parse(_editedEventDate.dateStart);
-      dateEnd = DateTime.parse(_editedEventDate.dateStart);
       locEventController.text = _editedEventDate.loc;
       descEventController.text = _editedEventDate.desc;
+
+      if(_userEdited != false){
+        pickedDateStart = DateTime.now();
+        pickedDateEnd = DateTime.now();
+        timeStart = TimeOfDay.now();
+        timeEnd = TimeOfDay.now();
+      }else{
+        pickedDateStart = DateTime.parse(_editedEventDate.dateStart);
+        pickedDateEnd = DateTime.parse(_editedEventDate.dateEnd);
+
+      }
 
     }
   }
@@ -76,7 +85,13 @@ class _EventCreatorState extends State<EventCreator> {
               decoration: InputDecoration(
                 labelText: "Nome do Evento:",
                 labelStyle: TextStyle(color: Colors.blue),
-              )
+              ),
+              onChanged: (text){
+                _userEdited = true;
+                setState(() {
+                  _editedEventDate.name = text;
+                });
+              },
             ),
           ),
           //Texto Data Inicio
@@ -106,7 +121,8 @@ class _EventCreatorState extends State<EventCreator> {
               child: ListTile(
 
                 leading: Icon(Icons.calendar_today, color: Colors.blue,),
-                title: Text("${pickedDateStart.day}/${pickedDateStart.month}/${pickedDateStart.year} - ${timeStart.hour}:${timeStart.minute}"),
+                title:
+                Text("${pickedDateStart.day}/${pickedDateStart.month}/${pickedDateStart.year} - ${pickedDateStart.hour}:${pickedDateStart.minute}"), //${timeStart.hour}:${timeStart.minute}
                 onTap: _pickDateStart,
               ),
             ),
@@ -137,7 +153,7 @@ class _EventCreatorState extends State<EventCreator> {
               ),
               child: ListTile(
                 leading: Icon(Icons.calendar_today, color: Colors.blue,),
-                title: Text("${pickedDateEnd.day}/${pickedDateEnd.month}/${pickedDateEnd.year} - ${timeEnd.hour}:${timeEnd.minute}"),
+                title: Text("${pickedDateEnd.day}/${pickedDateEnd.month}/${pickedDateEnd.year} - ${pickedDateEnd.hour}:${pickedDateEnd.minute} "),//${timeEnd.hour}:${timeEnd.minute}
                 onTap: _pickDateEnd,
               ),
             ),
@@ -150,7 +166,13 @@ class _EventCreatorState extends State<EventCreator> {
                 prefixIcon: Icon(Icons.gps_fixed_outlined, color: Colors.blue,),
                 labelText: "Localização",
                 labelStyle: TextStyle(color: Colors.blue),
-              )
+              ),
+              onChanged: (text){
+                _userEdited = true;
+                setState(() {
+                  _editedEventDate.loc = text;
+                });
+              },
             ),
           ),
           //Descricao do Evento
@@ -160,7 +182,13 @@ class _EventCreatorState extends State<EventCreator> {
               decoration: InputDecoration(
                 labelText: "Descrição do Evento: ",
                 labelStyle: TextStyle(color: Colors.blue),
-              )
+              ),
+              onChanged: (text){
+                _userEdited = true;
+                setState(() {
+                  _editedEventDate.desc = text;
+                });
+              },
             ),
           ),
           //criar evento
@@ -218,7 +246,7 @@ class _EventCreatorState extends State<EventCreator> {
       setState(() {
         timeStart = timeOfDay;
 
-        dateStart = DateTime(
+        pickedDateStart = DateTime(
             date.year,
             date.month,
             date.day,
@@ -256,7 +284,7 @@ class _EventCreatorState extends State<EventCreator> {
       setState(() {
         timeEnd = timeOfDay;
 
-        dateEnd = DateTime(
+        pickedDateEnd = DateTime(
             date.year,
             date.month,
             date.day,

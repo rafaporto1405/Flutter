@@ -17,9 +17,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
-  EventList eventListPage;
+  //EventList eventListPage;
+  EventList eventList = EventList();
 
-  String testList ="Lista: ";
   eventDateHelper helper = eventDateHelper();
   List<EventDate> event_date = List();
 
@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
     _selectedDates.add(DateTime(dateTime.year, dateTime.month, dateTime.day));
 
     super.initState();
+    _getAllContacts();
   }
 
 
@@ -68,6 +69,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
             //_ExcluirEvent();
             _testedbConsole();
             _showContactPage();
+
           },
         )
       ),
@@ -103,7 +105,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
 
   void _testedbConsole(){
     helper.getAllEventDate().then((list){print(list);} );
-    print(event_date);
+    //print(event_date);
+
+    //eventList.getAllContacts();
   }
 
   void _testedb(){
@@ -129,6 +133,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
   }
   
   void _ExcluirEvent(){
-    helper.deleteEventDate(6);
+    helper.deleteEventDate(4);
   }
 }
