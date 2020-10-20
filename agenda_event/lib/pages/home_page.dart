@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
     _selectedDates.add(DateTime(dateTime.year, dateTime.month, dateTime.day));
 
     super.initState();
-    _getAllContacts();
+    _getAllEventdate();
   }
 
 
@@ -101,6 +101,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
       });
     });
   }
+  void _getAllEventdate() {
+    helper.getAllEventDate().then((list) {
+      setState(() {
+        event_date = list;
+      });
+    });
+  }
+  
 
 
   void _testedbConsole(){
@@ -133,6 +141,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
   }
   
   void _ExcluirEvent(){
-    helper.deleteEventDate(4);
+    helper.deleteEventDate(13);
   }
 }

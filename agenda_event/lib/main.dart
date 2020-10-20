@@ -16,7 +16,6 @@ void main() {
   -apresentar as informações na lista de acordo com a data;
   -excluir contanto;
   -editar contato;
-  atualizar automaticamente a lista no arquivo: event_list;
   */
 }
 

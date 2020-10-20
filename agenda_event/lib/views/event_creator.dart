@@ -57,7 +57,8 @@ class _EventCreatorState extends State<EventCreator> {
       }else{
         pickedDateStart = DateTime.parse(_editedEventDate.dateStart);
         pickedDateEnd = DateTime.parse(_editedEventDate.dateEnd);
-
+        timeStart = TimeOfDay.now();
+        timeEnd = TimeOfDay.now();
       }
 
     }
@@ -204,8 +205,8 @@ class _EventCreatorState extends State<EventCreator> {
               padding: EdgeInsets.only(top:20.0, left:30.0,right: 30.0, bottom: 20.0),
               onPressed: (){
                 _editedEventDate.name = nameEventController.text;
-                _editedEventDate.dateStart = dateStart.toString();
-                _editedEventDate.dateEnd = dateEnd.toString();
+                _editedEventDate.dateStart = pickedDateStart.toString();
+                _editedEventDate.dateEnd = pickedDateEnd.toString();
                 _editedEventDate.loc = locEventController.text;
                 _editedEventDate.desc = descEventController.text;
                 Navigator.pop(context, _editedEventDate);

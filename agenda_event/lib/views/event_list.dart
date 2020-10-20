@@ -18,7 +18,9 @@ class EventList extends StatefulWidget {
 
 class _EventListState extends State<EventList> {
   eventDateHelper helper = eventDateHelper();
+  //List<EventDate> event_date_cont = List();
   List<EventDate> event_date = List();
+  //DateTime eventdatecont;
 
   void _getAllContacts() {
     helper.getAllEventDate().then((list) {
@@ -26,8 +28,21 @@ class _EventListState extends State<EventList> {
         event_date = list;
       });
     });
-    //print(event_date);
   }
+  /*void _getEspecEventDate() {
+    helper.getAllEventDate().then((list) {
+      setState(() {
+        event_date_cont = list;
+        for(int cont = 0; cont <= event_date_cont.length;cont++){
+          eventdatecont = DateTime.parse(event_date_cont[cont].dateStart);
+
+          if(eventdatecont.day == 19){
+            event_date.add(event_date_cont[cont]);
+          }
+        }
+      });
+    });
+  }*/
 
 
   @override
