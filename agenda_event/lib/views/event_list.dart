@@ -1,15 +1,18 @@
 import 'package:agenda_event/entities/event.dart';
 import 'package:agenda_event/helper/event_date.dart';
 import 'package:agenda_event/helper/time.dart';
+import 'package:agenda_event/pages/calendar.dart';
+import 'package:agenda_event/pages/calendar.dart';
 import 'package:agenda_event/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 import 'event_creator.dart';
 
 class EventList extends StatefulWidget {
-  EventList({this.events, Key key, this.onEdit, }) : super(key: key);
-  final List<Event> events;
-  final ValueChanged<Event> onEdit;
+  EventList({this.events, Key key, this.onEdit,  }) : super(key: key);
+  final List<EventDate> events;
+  final ValueChanged<EventDate> onEdit;
+
 
 
   @override
@@ -17,39 +20,42 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
-  eventDateHelper helper = eventDateHelper();
-  //List<EventDate> event_date_cont = List();
-  List<EventDate> event_date = List();
-  //DateTime eventdatecont;
 
-  void _getAllContacts() {
-    helper.getAllEventDate().then((list) {
-      setState(() {
-        event_date = list;
-      });
-    });
-  }
-  /*void _getEspecEventDate() {
-    helper.getAllEventDate().then((list) {
-      setState(() {
-        event_date_cont = list;
-        for(int cont = 0; cont <= event_date_cont.length;cont++){
-          eventdatecont = DateTime.parse(event_date_cont[cont].dateStart);
+  // List<EventDate> event_date = List();
+  // eventDateHelper helper = eventDateHelper();
+  // List<EventDate> event_date_cont = List();
+  // DateTime eventdatecont;
 
-          if(eventdatecont.day == 19){
-            event_date.add(event_date_cont[cont]);
-          }
-        }
-      });
-    });
-  }*/
+  // void _getAllContacts() {
+  //   helper.getAllEventDate().then((list) {
+  //     setState(() {
+  //       event_date = list;
+  //     });
+  //   });
+  // }
+  // void _getEspecEventDate() {
+  //   CalendarPage calendarPage = CalendarPage();
+  //   //calendarPage.selectedDates = _selectedDates;
+  //
+  //
+  //   helper.getAllEventDate().then((list) {
+  //     setState(() {
+  //       event_date_cont = list;
+  //       for(int cont = 0; cont <= event_date_cont.length;cont++){
+  //         eventdatecont = DateTime.parse(event_date_cont[cont].dateStart);
+  //
+  //         if(eventdatecont.day == _selectedDates[0].day){
+  //           event_date.add(event_date_cont[cont]);
+  //         }
+  //       }
+  //     });
+  //   });
+  // }
 
 
   @override
   void initState() {
     super.initState();
-
-    _getAllContacts();
   }
 
   @override
@@ -76,7 +82,7 @@ class _EventListState extends State<EventList> {
             ),
           ),
           Expanded(
-              child: event_date.isEmpty ?? true
+              child: widget.events.isEmpty ?? true
                   ? Container(
                 margin: EdgeInsets.only(top: 16),
                 alignment: Alignment.topCenter,
@@ -89,7 +95,7 @@ class _EventListState extends State<EventList> {
                   : RefreshIndicator(
                   child: ListView.builder(
                       padding: EdgeInsets.all(10.0),
-                      itemCount: event_date.length,
+                      itemCount: widget.events.length,
                       itemBuilder: (context, index) {
                         return _contactCard(context, index);
                       }
@@ -103,11 +109,11 @@ class _EventListState extends State<EventList> {
   }
 
   Future<Null> _refreshEvent() async {
-    helper.getAllEventDate().then((list) {
-      setState(() {
-        event_date = list;
-      });
-    });
+    // helper.getAllEventDate().then((list) {
+    //   setState(() {
+    //     event_date = list;
+    //   });
+    // });
   }
 
   Widget _contactCard(BuildContext context, int index) {
@@ -128,7 +134,7 @@ class _EventListState extends State<EventList> {
                       color: Colors.blue,
                     ),
                     Text(
-                      event_date[index].name,
+                      widget.events[index].name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold,
@@ -143,8 +149,8 @@ class _EventListState extends State<EventList> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      event_date[index].dateStart.substring(0, 16) + " às " +
-                          event_date[index].dateEnd.substring(0, 16),
+                      widget.events[index].dateStart.substring(0, 16) + " às " +
+                          widget.events[index].dateEnd.substring(0, 16),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16.0,
@@ -160,7 +166,7 @@ class _EventListState extends State<EventList> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      event_date[index].loc,
+                      widget.events[index].loc,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 16.0,
@@ -175,7 +181,7 @@ class _EventListState extends State<EventList> {
         ),
       ),
       onTap: (){
-        _showEventPage(context,eventDate: event_date[index]);
+        _showEventPage(context,eventDate: widget.events[index]);
       }
     );
   }
@@ -187,9 +193,9 @@ class _EventListState extends State<EventList> {
             builder: (context) => EventCreator(
               eventdate: eventDate,
             )));
-    if (recEventDate != null) {
-      await helper.updateEventDate(recEventDate);
-      _getAllContacts();
-    }
+    // if (recEventDate != null) {
+    //   await helper.updateEventDate(recEventDate);
+    //   _getAllContacts();
+    // }
   }
 }

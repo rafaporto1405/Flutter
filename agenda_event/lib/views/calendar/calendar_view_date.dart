@@ -27,6 +27,7 @@ class _CalendarViewDateState extends State<CalendarViewDate> {
   }
 
   Widget _buildDate() {
+
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(

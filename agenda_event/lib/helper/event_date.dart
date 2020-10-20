@@ -97,6 +97,23 @@ class eventDateHelper{
     return listEventDate;
   }
 
+  Future<List> getEspecEventDate(DateTime dateTime)async{
+    Database dbEventDate = await db;
+
+    String initialDate = dateTime.toString();
+    String finalDate = dateTime.toString().substring(0, 10)+' 23:59:59.999';
+    String query = "SELECT * FROM $eventDateTable WHERE $dateStartColumn between '$initialDate' and '$finalDate' order by $dateStartColumn";
+
+    List listMap = await dbEventDate.rawQuery(query);
+    List<EventDate> listEventDate = List();
+    for(Map m in listMap){
+      //transformando em eventDate e jogando na lista do tipo EventDate.
+      listEventDate.add(EventDate.fromMap(m));
+    }
+    return listEventDate;
+  }
+
+
   Future<int> getNumber()async {
     Database dbEventDate = await db;
     return Sqflite.firstIntValue(await dbEventDate.rawQuery("SELECT COUNT(*) FROM $eventDateTable"));

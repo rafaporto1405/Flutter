@@ -1,12 +1,13 @@
 import 'package:agenda_event/bloc/calendar.dart';
 import 'package:agenda_event/entities/event.dart';
+import 'package:agenda_event/helper/event_date.dart';
 import 'calendar_view_date.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CalanderViewBasic extends StatefulWidget {
-  final Map<DateTime, List<Event>> events;
+  final Map<DateTime, List<EventDate>> events;
   final List<DateTime> selected;
   final Function onDateSelected;
 
@@ -71,7 +72,7 @@ class _CalanderViewBasicState extends State<CalanderViewBasic> {
                 DateTime dateTime = DateTime(month.year, month.month, day);
                 bool notSameMonth = dateTime.month != month.month;
 
-                List<Event> event =
+                List<EventDate> event =
                 widget.events == null ? [] : widget.events[dateTime] ?? [];
                 return InkWell(
                   onTap: () {

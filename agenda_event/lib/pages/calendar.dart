@@ -1,14 +1,21 @@
 import 'package:agenda_event/entities/event.dart';
+import 'package:agenda_event/helper/event_date.dart';
 import 'package:agenda_event/views/calendar/calendar_view.dart';
 import 'package:agenda_event/views/event_list.dart';
 import 'package:flutter/material.dart';
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({Key key, this.selectedDates, this.events, this.onEdit})
+  const CalendarPage(
+      {Key key,
+      this.selectedDates,
+      this.events,
+      this.onEdit,
+      this.onChangedDate})
       : super(key: key);
   final List<DateTime> selectedDates;
-  final Map<DateTime, List<Event>> events;
-  final ValueChanged<Event> onEdit;
+  final Map<DateTime, List<EventDate>> events;
+  final ValueChanged<EventDate> onEdit;
+  final void Function(DateTime) onChangedDate;
 
   @override
   _CalendarPageState createState() => _CalendarPageState();
@@ -113,6 +120,9 @@ class _CalendarPageState extends State<CalendarPage>
                         selected: widget.selectedDates,
                         onDateSelected: (datetTime) => setState(() {
                           widget.selectedDates[0] = datetTime;
+
+                          if (widget.onChangedDate != null)
+                            widget.onChangedDate(datetTime);
                         }),
                       ),
                     ),
@@ -120,10 +130,10 @@ class _CalendarPageState extends State<CalendarPage>
                 }),
             Expanded(
               child: GestureDetector(
-                child: EventList(
-                  events: widget.events[widget.selectedDates[0]],
-                  onEdit: widget.onEdit,
-                ),
+                // child: EventList(
+                //   events: widget.events[widget.selectedDates[0]],
+                //   onEdit: widget.onEdit,
+                // ),
                 onVerticalDragDown: (DragDownDetails details) {
                   startY = details.localPosition.dy;
                 },
@@ -154,7 +164,7 @@ class _CalendarPageState extends State<CalendarPage>
                   // setState(() {
                   if (calendarHeight != null)
                     calendarHeight =
-                    calendarHeight > mid ? null : calendarMinHeight;
+                        calendarHeight > mid ? null : calendarMinHeight;
                   _playAnimation();
                   // });
                 },

@@ -1,5 +1,6 @@
 import 'package:agenda_event/bloc/calendar.dart';
 import 'package:agenda_event/entities/event.dart';
+import 'package:agenda_event/helper/event_date.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +12,7 @@ import 'calendar_view_date.dart';
 import 'calendar_view_month_picker.dart';
 
 class CalendarView extends StatelessWidget {
-  final Map<DateTime, List<Event>> events;
+  final Map<DateTime, List<EventDate>> events;
   final List<DateTime> selected;
   final bool collapseView;
   final ValueChanged<DateTime> onDateSelected;
@@ -49,7 +50,7 @@ class CalendarView extends StatelessWidget {
 }
 
 class CalendarViewContainer extends StatefulWidget {
-  final Map<DateTime, List<Event>> events;
+  final Map<DateTime, List<EventDate>> events;
   final List<DateTime> selected;
   final bool collapseView;
   final Function onDateSelected;

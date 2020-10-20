@@ -1,4 +1,4 @@
-class Event {
+class Event_ {
   String subject;
   String note;
   int startDateTime;
@@ -6,9 +6,9 @@ class Event {
 
   int id;
 
-  Event({this.subject, this.note, this.startDateTime, this.endDateTime});
+  Event_({this.subject, this.note, this.startDateTime, this.endDateTime});
 
-  Event.fromJson(Map<String, dynamic> json) {
+  Event_.fromJson(Map<String, dynamic> json) {
     subject = json['subject'];
     note = json['note'];
     startDateTime = json['startDateTime'];

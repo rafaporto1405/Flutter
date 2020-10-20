@@ -10,7 +10,6 @@ import 'calendar.dart';
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
   final String title;
-  
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -18,11 +17,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
   //EventList eventListPage;
-  EventList eventList = EventList();
+  //EventList eventList = EventList();
 
   eventDateHelper helper = eventDateHelper();
   List<EventDate> event_date = List();
-
+  DateTime testedataselect; //variavel teste
 
   final EventBloc _eventBloc = EventBloc();
   List<DateTime> _selectedDates = [];
@@ -35,7 +34,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
     _selectedDates.add(DateTime(dateTime.year, dateTime.month, dateTime.day));
 
     super.initState();
-    _getAllEventdate();
+  }
+
+  void searchDate(DateTime dateSelect){
+    helper.getEspecEventDate(dateSelect).then((list) {
+      setState(() {
+        event_date = list;
+        print (event_date);
+      });
+    });
   }
 
 
@@ -59,26 +66,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
             builder: (context, snapshot) {
               return CalendarPage(
                 events: _eventBloc.data?.eventMap ?? {},
-                selectedDates: _selectedDates,
+                selectedDates: _selectedDates??[],
+                 onChangedDate:(date)=> searchDate(date) //testedataselect=date,print(date) ,print(date) ,
               );
             }),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,
           child: Icon(Icons.add, color: Colors.blue,),
           onPressed: () {
-            //_ExcluirEvent();
-            _testedbConsole();
-            _showContactPage();
-
+            //_ExcluirEvent(4);
+            //_showEventCreatePage();
+            _showEventCreatePage(eventDate: event_date[0]);
+            //searchDate(testedataselect);
+            //_getAllEventdate();
+            //_testedbConsole();
           },
         )
       ),
     );
   }
 
-  //_showContactPage();
-
-  void _showContactPage({EventDate eventDate}) async {
+  void _showEventCreatePage({EventDate eventDate}) async {
     final recEventDate = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -91,16 +99,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
       } else {
         await helper.saveEventDate(recEventDate);
       }
-      _getAllContacts();
+      _getAllEventdate();
     }
   }
-  void _getAllContacts() {
-    helper.getAllEventDate().then((list) {
-      setState(() {
-        event_date = list;
-      });
-    });
+
+  void _ExcluirEvent(int index){
+    helper.deleteEventDate(index);
   }
+
   void _getAllEventdate() {
     helper.getAllEventDate().then((list) {
       setState(() {
@@ -108,39 +114,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin  {
       });
     });
   }
-  
-
 
   void _testedbConsole(){
-    helper.getAllEventDate().then((list){print(list);} );
-    //print(event_date);
-
-    //eventList.getAllContacts();
-  }
-
-  void _testedb(){
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () { },
-    );
-
-    AlertDialog dialogDb = AlertDialog(
-      title: Text("Pesquisa DB"),
-      content: Text("Nome do evento: " + event_date[0].name), //contacts[index].name
-      actions: [
-      okButton,
-    ],
-    );
-    
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-      return dialogDb;
-      },
-    );
-  }
-  
-  void _ExcluirEvent(){
-    helper.deleteEventDate(13);
+    //helper.getAllEventDate().then((list){print(list);} );
+    print(event_date);
+    //print(_selectedDates[0].day);
+    //print(testedataselect);
   }
 }
