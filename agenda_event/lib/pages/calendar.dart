@@ -130,10 +130,10 @@ class _CalendarPageState extends State<CalendarPage>
                 }),
             Expanded(
               child: GestureDetector(
-                // child: EventList(
-                //   events: widget.events[widget.selectedDates[0]],
-                //   onEdit: widget.onEdit,
-                // ),
+                child: EventList(
+                  events: widget.events[widget.selectedDates[0]],
+                  onEdit: widget.onEdit,
+                ),
                 onVerticalDragDown: (DragDownDetails details) {
                   startY = details.localPosition.dy;
                 },

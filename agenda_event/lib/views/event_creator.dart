@@ -4,9 +4,10 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 
 class EventCreator extends StatefulWidget {
-  final EventDate eventdate;
+  final EventDate eventDate;
+  final bool userEdited; //false
 
-  EventCreator({this.eventdate});
+  EventCreator({this.eventDate,this.userEdited});
 
   @override
   _EventCreatorState createState() => _EventCreatorState();
@@ -26,7 +27,6 @@ class _EventCreatorState extends State<EventCreator> {
   final locEventController = TextEditingController();
   final descEventController = TextEditingController();
 
-  bool _userEdited = false;
   EventDate _editedEventDate;
   eventDateHelper saveEvent;
 
@@ -35,7 +35,7 @@ class _EventCreatorState extends State<EventCreator> {
   void initState() { 
     super.initState();
 
-    if (widget.eventdate == null) {
+    if (widget.eventDate == null) {
       _editedEventDate = EventDate();
       pickedDateStart = DateTime.now();
       pickedDateEnd = DateTime.now();
@@ -43,13 +43,13 @@ class _EventCreatorState extends State<EventCreator> {
       timeEnd = TimeOfDay.now();
     } else {
       // transformando o contato em um mapa e criando um novo contato atraves dele
-      _editedEventDate = EventDate.fromMap(widget.eventdate.toMap());
+      _editedEventDate = EventDate.fromMap(widget.eventDate.toMap());
 
       nameEventController.text = _editedEventDate.name;
       locEventController.text = _editedEventDate.loc;
       descEventController.text = _editedEventDate.desc;
 
-      if(_userEdited != false){
+      if(widget.userEdited == false){
         pickedDateStart = DateTime.now();
         pickedDateEnd = DateTime.now();
         timeStart = TimeOfDay.now();
@@ -88,10 +88,11 @@ class _EventCreatorState extends State<EventCreator> {
                 labelStyle: TextStyle(color: Colors.blue),
               ),
               onChanged: (text){
-                _userEdited = true;
-                setState(() {
-                  _editedEventDate.name = text;
-                });
+                if(widget.userEdited == true){
+                  setState(() {
+                    _editedEventDate.name = text;
+                  });
+                }
               },
             ),
           ),
@@ -169,10 +170,11 @@ class _EventCreatorState extends State<EventCreator> {
                 labelStyle: TextStyle(color: Colors.blue),
               ),
               onChanged: (text){
-                _userEdited = true;
-                setState(() {
-                  _editedEventDate.loc = text;
-                });
+                if(widget.userEdited == true){
+                  setState(() {
+                    _editedEventDate.loc = text;
+                  });
+                }
               },
             ),
           ),
@@ -185,10 +187,11 @@ class _EventCreatorState extends State<EventCreator> {
                 labelStyle: TextStyle(color: Colors.blue),
               ),
               onChanged: (text){
-                _userEdited = true;
-                setState(() {
-                  _editedEventDate.desc = text;
-                });
+                if(widget.userEdited == true){
+                  setState(() {
+                    _editedEventDate.desc = text;
+                  });
+                }
               },
             ),
           ),

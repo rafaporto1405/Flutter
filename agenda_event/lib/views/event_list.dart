@@ -5,6 +5,7 @@ import 'package:agenda_event/pages/calendar.dart';
 import 'package:agenda_event/pages/calendar.dart';
 import 'package:agenda_event/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:agenda_event/bloc/event.dart';
 
 import 'event_creator.dart';
 
@@ -20,6 +21,7 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
+  final EventBloc _eventBloc = EventBloc();
 
   // List<EventDate> event_date = List();
   // eventDateHelper helper = eventDateHelper();
@@ -181,21 +183,22 @@ class _EventListState extends State<EventList> {
         ),
       ),
       onTap: (){
-        _showEventPage(context,eventDate: widget.events[index]);
+        //_showEventPage(context,eventDate: widget.events[index]);
+        _eventBloc.createEvent(context, widget.events[index], true);
       }
     );
   }
 
-  void _showEventPage(BuildContext context, {EventDate eventDate}) async {
-    final recEventDate = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EventCreator(
-              eventdate: eventDate,
-            )));
-    // if (recEventDate != null) {
-    //   await helper.updateEventDate(recEventDate);
-    //   _getAllContacts();
-    // }
-  }
+  // void _showEventPage(BuildContext context, {EventDate eventDate}) async {
+  //   final recEventDate = await Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => EventCreator(
+  //             eventDate: eventDate,
+  //           )));
+  //   if (recEventDate != null) {
+  //     await helper.updateEventDate(recEventDate);
+  //     _getAllContacts();
+  //   }
+  // }
 }
