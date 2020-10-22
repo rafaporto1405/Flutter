@@ -1,0 +1,19 @@
+{
+    "Products": [
+        {
+            "id": 1,
+            "name": "Caneta A",
+            "price": 5.50
+        },
+        {
+            "id": 2,
+            "name": "Caneta B",
+            "price": 7.50
+        },
+        {
+            "id": 2,
+            "name": "Caneta C",
+            "price": 6.50
+        }
+    ]
+}
